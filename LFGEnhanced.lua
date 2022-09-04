@@ -47,6 +47,12 @@ local FilterSoloEntries = filter(function (search_result_id)
 	return result_members == 1
 end)
 
+local FilterOutMyEntry = filter(function (search_result_id)
+	local result_info = C_LFGList.GetSearchResultInfo(search_result_id)
+	-- hasSelf is unique to classic
+	return not result_info.hasSelf
+end)
+
 -- This function can only be called for HW execution contexts.
 local function SearchLFGForActiveEntry()
 	if not C_LFGList.HasActiveEntryInfo() then
@@ -83,7 +89,7 @@ local function DisplaySoloEntryMessages()
 	local looking_for_your_roles = 0
 	local your_roles = C_LFGList.GetRoles()
 
-	for _, v in ipairs(results) do
+	for _, v in ipairs(FilterOutMyEntry(results)) do
 		local result_info = C_LFGList.GetSearchResultInfo(v)
 		local result_members = result_info.numMembers
 		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
@@ -143,7 +149,7 @@ local function DisplayPartyEntryMessages()
 	local available_healers = 0
 	local available_dps = 0
 
-	for _, v in ipairs(FilterSoloEntries(results)) do
+	for _, v in ipairs(FilterSoloEntries(FilterOutMyEntry(results))) do
 		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
 		local include_entry = false
 
