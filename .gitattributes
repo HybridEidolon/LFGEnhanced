@@ -1,5 +1,8 @@
 *.lua text auto
 *.toc text auto
 *.md text auto
+*.yml text auto
+*.yaml text auto
 
 COPYING text auto
+.pkgmeta text auto
