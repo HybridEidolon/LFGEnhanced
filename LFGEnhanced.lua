@@ -4,7 +4,7 @@ local frame = CreateFrame("Frame")
 -- local LFGBrowseFrame = _G["LFGBrowseFrame"]
 -- local WorldFrame = _G["WorldFrame"]
 
-local AUTO_SEARCH_REFRESH_INTERVAL_SECONDS = 60.0
+local AUTO_SEARCH_REFRESH_INTERVAL_SECONDS = 30.0
 local GROUP_FINDER_CATEGORY_DUNGEONS = 2
 local GROUP_FINDER_CATEGORY_HEROIC_DUNGEONS = 117
 local GROUP_FINDER_CATEGORY_RAIDS = 114
