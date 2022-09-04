@@ -281,6 +281,7 @@ local function HandleInputEvent(self)
 	end
 
 	if GetTimePreciseSec() >= auto_search_deadline then
+		ResetAutoSearchDeadline()
 		SearchLFGForActiveEntry()
 	end
 end

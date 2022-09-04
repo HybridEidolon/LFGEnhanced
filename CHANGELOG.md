@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3
+
+- Fix deadline reset when searching
+
 ## 0.2
 
 - Split LFG/LFM messages between solo and party leader entries.
