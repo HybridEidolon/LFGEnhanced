@@ -95,32 +95,33 @@ local function DisplaySoloEntryMessages()
 	for _, v in ipairs(FilterOutMyEntry(results)) do
 		local result_info = C_LFGList.GetSearchResultInfo(v)
 		local result_members = result_info.numMembers
-		local member_counts = {["TANK"] = 0, ["HEALER"] = 0, ["DAMAGER"] = 0}
+		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
 		local group_needs_you = false
 
-		-- C_LFGList.GetSearchResultMemberCounts is BROKEN
-		-- IT DOES NOT PROVIDE CORRECT ROLE INFORMATION
-		-- C_LFGList.GetSearchResultMemberInfo must be used instead.
-		for i = 1, result_members do
-			-- from Blizzard_LFGBrowse.lua
-			local name, role, classFileName, className, level, isLeader =
-					C_LFGList.GetSearchResultMemberInfo(v, i)
-			if role == "NOROLE" or role == nil then
-				role = "DAMAGER"
+		if result_members == 1 do
+			-- Solo entries use LEADER_ROLE_<ROLE> keys
+			local is_tank = member_counts.LEADER_ROLE_TANK
+			local is_healer = member_counts.LEADER_ROLE_HEALER
+			local is_dps = member_counts.LEADER_ROLE_DAMAGER
+			if is_tank and (your_roles.healer or your_roles.dps) then
+				group_needs_you = true
 			end
-			member_counts[role] = member_counts[role] + 1
-		end
-
-		if result_members < 5 then
-			if your_roles.tank == true and member_counts.TANK == 0 then
+			if is_healer and (your_roles.tank or your_roles.dps) then
+				group_needs_you = true
+			end
+			if is_dps then
+				group_needs_you = true
+			end
+		else
+			if your_roles.tank == true and member_counts.TANK_REMAINING > 0 then
 				group_needs_you = true
 			end
 
-			if your_roles.healer == true and member_counts.HEALER == 0 then
+			if your_roles.healer == true and member_counts.HEALER_REMAINING > 0 then
 				group_needs_you = true
 			end
 
-			if your_roles.dps == true and member_counts.DAMAGER < 3 then
+			if your_roles.dps == true and member_counts.DAMAGE_REMAINING > 0 then
 				group_needs_you = true
 			end
 		end
@@ -166,29 +167,21 @@ local function DisplayPartyEntryMessages()
 	local available_dps = 0
 
 	for _, v in ipairs(FilterSoloEntries(FilterOutMyEntry(results))) do
-		local member_counts = {["TANK"] = 0, ["HEALER"] = 0, ["DAMAGER"] = 0}
-
-		for i = 1, result_members do
-			-- from Blizzard_LFGBrowse.lua
-			local name, role, classFileName, className, level, isLeader =
-					C_LFGList.GetSearchResultMemberInfo(v, i)
-			if role == "NOROLE" or role == nil then
-				role = "DAMAGER"
-			end
-			member_counts[role] = member_counts[role] + 1
-		end
-
+		local result_info = C_LFGList.GetSearchResultInfo(v)
+		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
 		local include_entry = false
 
-		if need_tank > 0 and member_counts.TANK > 0 then
+		if need_tank > 0 and member_counts["LEADER_ROLE_TANK"] then
 			include_entry = true
 			available_tanks = available_tanks + 1
 		end
-		if need_healer > 0 and member_counts.HEALER > 0 then
+
+		if need_healer > 0 and member_counts["LEADER_ROLE_HEALER"] then
 			include_entry = true
 			available_healers = available_healers + 1
 		end
-		if need_dps > 0 and member_counts.DAMAGER > 0 then
+
+		if need_dps > 0 and member_counts["LEADER_ROLE_DAMAGER"] then
 			include_entry = true
 			available_dps = available_dps + 1
 		end
