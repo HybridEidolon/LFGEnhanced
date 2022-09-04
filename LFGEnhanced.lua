@@ -52,6 +52,56 @@ local function AutoSearchCurrentEntry()
 	end
 end
 
+-- Process the current LFGList search results.
+local function DisplayMessagesForCurrentSearchResults()
+	local result_count, results = C_LFGList.GetFilteredSearchResults()
+
+	if not C_LFGList.HasActiveEntryInfo() then
+		-- Don't do anything unless there is an active LFG entry.
+		return
+	end
+
+	local active_entry = C_LFGList.GetActiveEntryInfo()
+
+	local group_member_counts = GetGroupMemberCounts()
+
+	local looking_for_your_roles = 0
+	local greater_than_1 = 0
+	local your_roles = C_LFGList.GetRoles()
+	for _, v in ipairs(results) do
+		local result_info = C_LFGList.GetSearchResultInfo(v)
+		local result_members = result_info.numMembers
+		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
+		local group_needs_you = false
+
+		if member_counts ~= nil then
+			if your_roles.tank == true and member_counts.TANK == 0 then
+				group_needs_you = true
+			end
+
+			if your_roles.healer == true and member_counts.HEALER == 0 then
+				group_needs_you = true
+			end
+
+			if your_roles.dps == true and member_counts.DAMAGER < 3 then
+				group_needs_you = true
+			end
+		end
+
+		if group_needs_you then
+			looking_for_your_roles = looking_for_your_roles + 1
+		end
+
+		if result_members > 1 then
+			greater_than_1 = greater_than_1 + 1
+		end
+	end
+
+	if looking_for_your_roles > 0 then
+		SendSystemMessage(format("LFG: %d Groups. %d need your roles. %d have more than 1 member.", result_count, looking_for_your_roles, greater_than_1))
+	end
+end
+
 local function BindEvents(frame, event_handlers)
 	local on_event_script = function (self, event, ...)
 		local handler = event_handlers[event]
@@ -73,48 +123,7 @@ BindEvents(frame, {
 			ResetAutoSearchDeadline()
 		end
 
-		local result_count, results = C_LFGList.GetFilteredSearchResults()
-		-- SendSystemMessage(format("Found %d Groups matching your search criteria.", result_count))
-
-		local active_entry = C_LFGList.GetActiveEntryInfo()
-
-		local group_member_counts = GetGroupMemberCounts()
-
-		local looking_for_your_roles = 0
-		local greater_than_1 = 0
-		local your_roles = C_LFGList.GetRoles()
-		for _, v in ipairs(results) do
-			local result_info = C_LFGList.GetSearchResultInfo(v)
-			local result_members = result_info.numMembers
-			local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
-			local group_needs_you = false
-
-			if member_counts ~= nil then
-				if your_roles.tank == true and member_counts.TANK == 0 then
-					group_needs_you = true
-				end
-
-				if your_roles.healer == true and member_counts.HEALER == 0 then
-					group_needs_you = true
-				end
-
-				if your_roles.dps == true and member_counts.DAMAGER < 3 then
-					group_needs_you = true
-				end
-			end
-
-			if group_needs_you then
-				looking_for_your_roles = looking_for_your_roles + 1
-			end
-
-			if result_members > 1 then
-				greater_than_1 = greater_than_1 + 1
-			end
-		end
-
-		if looking_for_your_roles > 0 then
-			SendSystemMessage(format("LFG: %d Groups. %d need your roles. %d have more than 1 member.", result_count, looking_for_your_roles, greater_than_1))
-		end
+		DisplayMessagesForCurrentSearchResults()
 	end,
 
 	["LFG_LIST_SEARCH_RESULT_UPDATED"] = function (...)
