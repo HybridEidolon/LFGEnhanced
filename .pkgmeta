@@ -1,6 +1,8 @@
 ignore:
   - README.md
   - CHANGELOG.md
+  - .editorconfig
+  - .gitattributes
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
