@@ -95,10 +95,23 @@ local function DisplaySoloEntryMessages()
 	for _, v in ipairs(FilterOutMyEntry(results)) do
 		local result_info = C_LFGList.GetSearchResultInfo(v)
 		local result_members = result_info.numMembers
-		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
+		local member_counts = {["TANK"] = 0, ["HEALER"] = 0, ["DAMAGER"] = 0}
 		local group_needs_you = false
 
-		if member_counts ~= nil and result_members < 5 then
+		-- C_LFGList.GetSearchResultMemberCounts is BROKEN
+		-- IT DOES NOT PROVIDE CORRECT ROLE INFORMATION
+		-- C_LFGList.GetSearchResultMemberInfo must be used instead.
+		for i = 1, result_members do
+			-- from Blizzard_LFGBrowse.lua
+			local name, role, classFileName, className, level, isLeader =
+					C_LFGList.GetSearchResultMemberInfo(v, i)
+			if role == "NOROLE" or role == nil then
+				role = "DAMAGER"
+			end
+			member_counts[role] = member_counts[role] + 1
+		end
+
+		if result_members < 5 then
 			if your_roles.tank == true and member_counts.TANK == 0 then
 				group_needs_you = true
 			end
@@ -153,7 +166,18 @@ local function DisplayPartyEntryMessages()
 	local available_dps = 0
 
 	for _, v in ipairs(FilterSoloEntries(FilterOutMyEntry(results))) do
-		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
+		local member_counts = {["TANK"] = 0, ["HEALER"] = 0, ["DAMAGER"] = 0}
+
+		for i = 1, result_members do
+			-- from Blizzard_LFGBrowse.lua
+			local name, role, classFileName, className, level, isLeader =
+					C_LFGList.GetSearchResultMemberInfo(v, i)
+			if role == "NOROLE" or role == nil then
+				role = "DAMAGER"
+			end
+			member_counts[role] = member_counts[role] + 1
+		end
+
 		local include_entry = false
 
 		if need_tank > 0 and member_counts.TANK > 0 then
