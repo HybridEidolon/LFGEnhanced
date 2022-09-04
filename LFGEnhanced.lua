@@ -71,7 +71,7 @@ local function SearchLFGForActiveEntry()
 	-- be handled elsewhere.
 	for _, v in ipairs(active_entry.activityIDs) do
 		local activity_info = C_LFGList.GetActivityInfoTable(v)
-		if category_id ~= nil then
+		if category_id == nil then
 			category_id = activity_info.categoryID
 		end
 	end
