@@ -1,0 +1,5 @@
+*.lua text auto
+*.toc text auto
+*.md text auto
+
+COPYING text auto
