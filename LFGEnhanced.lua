@@ -98,7 +98,7 @@ local function DisplaySoloEntryMessages()
 		local member_counts = C_LFGList.GetSearchResultMemberCounts(v)
 		local group_needs_you = false
 
-		if result_members == 1 do
+		if result_members == 1 then
 			-- Solo entries use LEADER_ROLE_<ROLE> keys
 			local is_tank = member_counts.LEADER_ROLE_TANK
 			local is_healer = member_counts.LEADER_ROLE_HEALER
