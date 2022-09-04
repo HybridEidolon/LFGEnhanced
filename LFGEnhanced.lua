@@ -5,6 +5,9 @@ local frame = CreateFrame("Frame")
 -- local WorldFrame = _G["WorldFrame"]
 
 local AUTO_SEARCH_REFRESH_INTERVAL_SECONDS = 60.0
+local GROUP_FINDER_CATEGORY_DUNGEONS = 2
+local GROUP_FINDER_CATEGORY_HEROIC_DUNGEONS = 117
+local GROUP_FINDER_CATEGORY_RAIDS = 114
 
 local auto_search_deadline = nil
 
@@ -226,8 +229,7 @@ BindEvents(frame, {
 	end,
 
 	["LFG_LIST_ACTIVE_ENTRY_UPDATE"] = function (...)
-		local has_active_entry_info = C_LFGList.HasActiveEntryInfo()
-		if not has_active_entry_info then
+		if not C_LFGList.HasActiveEntryInfo() then
 			DeactivateEntryAutoSearch()
 			return
 		end
@@ -238,8 +240,9 @@ BindEvents(frame, {
 		for _, v in ipairs(active_entry_info.activityIDs) do
 			local activity_info = C_LFGList.GetActivityInfoTable(v)
 
-			-- Only auto-search for activities which use dungeon role expectations.
-			if not activity_info.useDungeonRoleExpectations then
+			-- Only auto-search for Dungeons and Heroics categories
+			local category_id = activity_info.categoryID
+			if category_id ~= GROUP_FINDER_CATEGORY_DUNGEONS and category_id ~= GROUP_FINDER_CATEGORY_HEROIC_DUNGEONS then
 				return
 			end
 		end
