@@ -17,12 +17,10 @@ if C_LFGList.HasActiveEntryInfo() then
 end
 
 local function DeactivateEntryAutoSearch()
-	SendSystemMessage("LFGEnhanced auto-search deactivated.")
 	auto_search_deadline = nil
 end
 
 local function ActivateEntryAutoSearch()
-	SendSystemMessage("LFGEnhanced auto-search activated.")
 	ResetAutoSearchDeadline()
 end
 
