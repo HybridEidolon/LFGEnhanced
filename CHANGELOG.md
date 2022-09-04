@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2
 
 - Split LFG/LFM messages between solo and party leader entries.
 - Display candidate roles by what your party needs, assuming it's a typical 5-man
