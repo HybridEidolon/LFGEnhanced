@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4
+
+- Fixed several bugs around the use of MemberCounts. Should generally work in
+  all cases now.
+
 ## 0.3
 
 - Fix deadline reset when searching
