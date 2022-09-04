@@ -219,11 +219,6 @@ BindEvents(frame, {
 		DisplayMessagesForCurrentSearchResults()
 	end,
 
-	["LFG_LIST_SEARCH_RESULT_UPDATED"] = function (...)
-		local search_result_id = ...
-		local result_info = C_LFGList.GetSearchResultInfo(search_result_id)
-	end,
-
 	["LFG_LIST_ACTIVE_ENTRY_UPDATE"] = function (...)
 		local has_active_entry_info = C_LFGList.HasActiveEntryInfo()
 		if not has_active_entry_info then
