@@ -48,8 +48,7 @@ local FilterSoloEntries = filter(function (search_result_id)
 end)
 
 -- This function can only be called for HW execution contexts.
-local function AutoSearchCurrentEntry()
-	ResetAutoSearchDeadline()
+local function SearchLFGForActiveEntry()
 	if not C_LFGList.HasActiveEntryInfo() then
 		return
 	end
@@ -254,7 +253,7 @@ local function HandleInputEvent(self)
 	end
 
 	if GetTimePreciseSec() >= auto_search_deadline then
-		AutoSearchCurrentEntry()
+		SearchLFGForActiveEntry()
 	end
 end
 
