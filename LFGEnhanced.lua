@@ -121,7 +121,7 @@ local function DisplaySoloEntryMessages()
 				group_needs_you = true
 			end
 
-			if your_roles.dps == true and member_counts.DAMAGE_REMAINING > 0 then
+			if your_roles.dps == true and member_counts.DAMAGER_REMAINING > 0 then
 				group_needs_you = true
 			end
 		end
