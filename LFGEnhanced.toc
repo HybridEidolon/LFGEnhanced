@@ -1,0 +1,8 @@
+## Interface: 30400
+## Title: LFGEnhanced
+## Notes: Enhancements for the World of Warcraft Classic LFG tool
+## Version: 0.1-dev
+## Author: Eidolon
+## X-Website: https://github.com/HybridEidolon/LFGEnhanced
+
+LFGEnhanced.lua
