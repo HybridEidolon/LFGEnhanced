@@ -6,6 +6,8 @@
   their level, class, and roles will immediately be shown in your primary chat
   window. This is faster than waiting for the tooltip to load on the popup
   window that is shown by the Blizzard UI.
+- The search results messages will now only be shown if you are actively looking
+  for a Dungeon or Heroic.
 
 ## 0.4
 

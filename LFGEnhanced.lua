@@ -243,6 +243,18 @@ BindEvents(frame, {
 			ResetAutoSearchDeadline()
 		end
 
+		local active_entry_info = C_LFGList.GetActiveEntryInfo()
+
+		-- Active entry contains multiple activity IDs in Classic.
+		for _, v in ipairs(active_entry_info.activityIDs) do
+			local activity_info = C_LFGList.GetActivityInfoTable(v)
+
+			local category_id = activity_info.categoryID
+			if category_id ~= GROUP_FINDER_CATEGORY_DUNGEONS and category_id ~= GROUP_FINDER_CATEGORY_HEROIC_DUNGEONS then
+				return
+			end
+		end
+
 		DisplayMessagesForCurrentSearchResults()
 	end,
 
