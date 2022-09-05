@@ -11,3 +11,6 @@ wanted to address in the tool.
 - Automatic background search of listings for the same criteria you have
   listed yourself when your listing criteria consists of activities which use
   "Dungeon Role Expectations".
+- The class, roles, and level of any player requesting an invite or being
+  suggested for an invite will be shown in your primary chat window
+  automatically.

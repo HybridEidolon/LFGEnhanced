@@ -5,6 +5,7 @@ local frame = CreateFrame("Frame")
 -- local WorldFrame = _G["WorldFrame"]
 
 local AUTO_SEARCH_REFRESH_INTERVAL_SECONDS = 30.0
+local INVITE_CONFIRMATION_REFRESH_INTERVAL_SECONDS = 0.5
 local GROUP_FINDER_CATEGORY_DUNGEONS = 2
 local GROUP_FINDER_CATEGORY_HEROIC_DUNGEONS = 117
 local GROUP_FINDER_CATEGORY_RAIDS = 114
@@ -265,6 +266,45 @@ BindEvents(frame, {
 		end
 
 		ActivateEntryAutoSearch()
+	end,
+
+	["GROUP_INVITE_CONFIRMATION"] = function (...)
+		local next_invite = GetNextPendingInviteConfirmation()
+		if not next_invite then
+			return
+		end
+
+		C_Timer.NewTicker(INVITE_CONFIRMATION_REFRESH_INTERVAL_SECONDS, function (self)
+			local _, _, guid, roles, _, level = GetInviteConfirmationInfo(next_invite)
+			local class_name, eng_class_name, _, _, _, character_name, _ = GetPlayerInfoByGUID(guid)
+			if class_name == nil then
+				-- retry after interval
+				return
+			end
+
+			self:Cancel() -- we got the data we want to show
+
+			local _, _, _, color_code = GetClassColor(eng_class_name)
+			local colored_name = WrapTextInColorCode(character_name, color_code)
+			local player_link = GetPlayerLink(character_name, ("[%s]"):format(colored_name))
+			local level_text = (" Lv %d"):format(level)
+			local roles_text = ""
+			if roles["TANK"] or roles["HEALER"] or roles["DAMAGER"] then
+				roles_text = " ("
+				if roles["TANK"] then
+					roles_text = roles_text .. " " .. INLINE_TANK_ICON_SMALL
+				end
+				if roles["HEALER"] then
+					roles_text = roles_text .. " " .. INLINE_HEALER_ICON_SMALL
+				end
+				if roles["DAMAGER"] then
+					roles_text = roles_text .. " " .. INLINE_DAMAGER_ICON_SMALL
+				end
+				roles_text = roles_text .. ")"
+			end
+
+			SendSystemMessage(format("LFG Join Request: %s%s%s", player_link, level_text, roles_text))
+		end, 10)
 	end,
 })
 

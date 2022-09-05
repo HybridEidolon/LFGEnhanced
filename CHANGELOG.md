@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- When a player requests an invite or is suggested for invitation by your party,
+  their level, class, and roles will immediately be shown in your primary chat
+  window. This is faster than waiting for the tooltip to load on the popup
+  window that is shown by the Blizzard UI.
+
 ## 0.4
 
 - Fixed several bugs around the use of MemberCounts. Should generally work in
