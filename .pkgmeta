@@ -1,6 +1,4 @@
 ignore:
-  - README.md
-  - CHANGELOG.md
   - .editorconfig
   - .gitattributes
 manual-changelog:
