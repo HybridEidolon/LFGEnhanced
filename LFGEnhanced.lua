@@ -243,6 +243,10 @@ BindEvents(frame, {
 			ResetAutoSearchDeadline()
 		end
 
+		if not C_LFGList.HasActiveEntryInfo() then
+			return
+		end
+
 		local active_entry_info = C_LFGList.GetActiveEntryInfo()
 
 		-- Active entry contains multiple activity IDs in Classic.
