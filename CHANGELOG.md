@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.6
+
+- Fixed a Lua error when using the LFG tool to search for listings without
+  an active listing.
+
+## 0.5
 
 - When a player requests an invite or is suggested for invitation by your party,
   their level, class, and roles will immediately be shown in your primary chat
