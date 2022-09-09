@@ -133,9 +133,20 @@ local function DisplaySoloEntryMessages()
 	end
 
 	if looking_for_your_roles > 0 then
+		local your_role_icons = ""
+		if your_roles.tank then
+			your_role_icons = your_role_icons .. INLINE_TANK_ICON_SMALL
+		end
+		if your_roles.healer then
+			your_role_icons = your_role_icons .. INLINE_HEALER_ICON_SMALL
+		end
+		if your_roles.dps then
+			your_role_icons = your_role_icons .. INLINE_DAMAGER_ICON_SMALL
+		end
 		SendSystemMessage(format(
-			"LFG: %d Results are looking for your selected roles.",
-			looking_for_your_roles
+			"LFG: %d Results are looking for your selected roles (%s).",
+			looking_for_your_roles,
+			your_role_icons
 		))
 		PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
 	else
@@ -196,10 +207,13 @@ local function DisplayPartyEntryMessages()
 	if available_candidates > 0 then
 		-- Maybe this should play a sound and highlight the LFG minimap eye?
 		SendSystemMessage(format(
-			"LFM: %d Results (%d T/%d H/%d D).",
+			"LFM: %d Results (%s%d %s%d %s%d).",
 			available_candidates,
+			INLINE_TANK_ICON_SMALL,
 			available_tanks,
+			INLINE_HEALER_ICON_SMALL,
 			available_healers,
+			INLINE_DAMAGER_ICON_SMALL,
 			available_dps
 		))
 		PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
