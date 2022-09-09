@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7
+
+- Play the retail group finder application sound when there are candidates in
+  the search results.
+- Show role icons in the candidate results message
+
 ## 0.6
 
 - Fixed a Lua error when using the LFG tool to search for listings without
