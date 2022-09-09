@@ -9,6 +9,7 @@ local INVITE_CONFIRMATION_REFRESH_INTERVAL_SECONDS = 0.5
 local GROUP_FINDER_CATEGORY_DUNGEONS = 2
 local GROUP_FINDER_CATEGORY_HEROIC_DUNGEONS = 117
 local GROUP_FINDER_CATEGORY_RAIDS = 114
+local UI_GROUP_FINDER_RECEIVE_APPLICATION_PATH = "Interface/AddOns/LFGEnhanced/Sound/Interface/UI_GroupFinderReceiveApplication_01.ogg"
 
 local auto_search_deadline = nil
 
@@ -148,7 +149,7 @@ local function DisplaySoloEntryMessages()
 			looking_for_your_roles,
 			your_role_icons
 		))
-		PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
+		PlaySoundFile(UI_GROUP_FINDER_RECEIVE_APPLICATION_PATH, "Dialog")
 	else
 		SendSystemMessage("LFG: No candidate Results.")
 	end
@@ -216,7 +217,7 @@ local function DisplayPartyEntryMessages()
 			INLINE_DAMAGER_ICON_SMALL,
 			available_dps
 		))
-		PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
+		PlaySoundFile(UI_GROUP_FINDER_RECEIVE_APPLICATION_PATH, "Dialog")
 	else
 		SendSystemMessage("LFM: No candidate Results.")
 	end
