@@ -137,6 +137,7 @@ local function DisplaySoloEntryMessages()
 			"LFG: %d Results are looking for your selected roles.",
 			looking_for_your_roles
 		))
+		PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
 	else
 		SendSystemMessage("LFG: No candidate Results.")
 	end
@@ -201,6 +202,7 @@ local function DisplayPartyEntryMessages()
 			available_healers,
 			available_dps
 		))
+		PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
 	else
 		SendSystemMessage("LFM: No candidate Results.")
 	end
